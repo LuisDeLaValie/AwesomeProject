@@ -5,14 +5,19 @@
  * @format
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
+  Alert,
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
+  Touchable,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -24,6 +29,7 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import RoundButton from './componets/control/RoundButton';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -56,40 +62,39 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 }
 
 function App(): React.JSX.Element {
+  const [nombre, setNombre] = useState('');
+
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const buttonOnPress = async () => {
+    await Alert.alert(`Hola, Hola ${nombre}`);
+    await Alert.alert('Alert 2');
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+        // backgroundColor={backgroundStyle.backgroundColor}
+        backgroundColor="#f0f0f000"
+        translucent={false}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
-        <Header />
+        {/* <Header /> */}
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <Text>Introduce tu nombre</Text>
+          <TextInput style={styles.textInput} onChangeText={setNombre} />
+
+          <RoundButton texto="Hola" onPress={buttonOnPress} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -97,6 +102,13 @@ function App(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
+  textInput: {
+    borderBlockColor: 'black',
+    borderWidth: 1,
+    borderRadius: 4,
+    borderStyle: 'solid',
+    margin: 8,
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,
